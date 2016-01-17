@@ -18,6 +18,7 @@ import util.ServletUtilitats;
 public class Exercici01 extends HttpServlet {
 
     private static final String TITOL = "Exercici 01";
+    private static final String CONTINGUT = "Ola ke ase, programa o ke ase";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,11 +34,7 @@ public class Exercici01 extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println(ServletUtilitats.escriuCapçalera(TITOL));
-            out.println("<body>");
-            out.println("<h1>Salutació!</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println(ServletUtilitats.construirPagina(TITOL, CONTINGUT));
         }
     }
 

@@ -21,33 +21,49 @@ public class SumaServlet extends HttpServlet {
 
     public static final String TITOL = "Suma";
     public static final String CONTENT_TYPE = "text/html";
+    private static String contingut;
     public static String[] CAMPS; 
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(CONTENT_TYPE);
+        contingut = ServletUtilitats.escriuFormulari(CAMPS);
         
-        out.println(ServletUtilitats.construirPagina(TITOL, 
-                        ServletUtilitats.escriuFormulari(CAMPS)
+        try(PrintWriter out = resp.getWriter()) {
+            
+            resp.setContentType(CONTENT_TYPE);
+
+            out.println(ServletUtilitats.construirPagina(
+                    TITOL, 
+                    contingut
                 )
-        );
+            );
+            
+        }
         
     }
     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
         int n1 = Integer.parseInt(req.getParameter(CAMPS[0])); // coge un parametro
         int n2 = Integer.parseInt(req.getParameter(CAMPS[1]));
         
         int res = n1 + n2;
         
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(CONTENT_TYPE);
+        contingut = "La suma és <b>"+ res + "</b>";
         
-        out.println();
-        out.println("La suma és <b>"+ res + "</b>");
+        try (PrintWriter out = resp.getWriter()) {
+            
+            resp.setContentType(CONTENT_TYPE);
+            out.println(ServletUtilitats.construirPagina(
+                    TITOL, 
+                    contingut
+                )
+            );
+            
+        }
+        
     }
     
 }
