@@ -45,15 +45,21 @@ public class Accessos extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String contingut;
+            StringBuilder contingut = new StringBuilder();
             String sortida;
             novaVisita();
-            String carregaServlet = "Càrrega del servlet: " + getDataCarrega() + "<br/>" + C_R;
-            String carregaPagina = "Càrrega de la pàgina: " + getDataActual() + "<br/>" + C_R;
-            String carregaVisites = "Nombre de visites: " + getVisites() + "<br/>" + C_R;
+            StringBuilder carregaServlet = new StringBuilder()
+                    .append("Càrrega del servlet: ").append(getDataCarrega())
+                    .append("<br/>");
+            StringBuilder carregaPagina = new StringBuilder()
+                    .append("Càrrega de la pàgina: ").append(getDataActual())
+                    .append("<br/>");
+            StringBuilder carregaVisites = new StringBuilder()
+                    .append("Nombre de visites: ").append(getVisites())
+                    .append("<br/>");
             
-            contingut = carregaServlet + carregaPagina + carregaVisites;
-            sortida = ServletUtilitats.construirPagina(TITOL, contingut);
+            contingut.append(carregaServlet).append(carregaPagina).append(carregaVisites);
+            sortida = ServletUtilitats.construirPagina(TITOL, contingut.toString());
             
             out.println(sortida);
             
@@ -94,10 +100,6 @@ public class Accessos extends HttpServlet {
         
     }
     
-    private void novaVisita() {
-        setVisites(getVisites()+1);
-    }
-    
     public static String getDataActual() {
         Date d = new Date();
         return d.toString();
@@ -117,6 +119,10 @@ public class Accessos extends HttpServlet {
 
     public void setVisites(int visites) {
         this.visites = visites;
+    }
+    
+    public void novaVisita() {
+        setVisites(getVisites() + 1);
     }
     
 }
