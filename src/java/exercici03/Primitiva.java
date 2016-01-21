@@ -1,36 +1,31 @@
-package exercici02;
+package exercici03;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.in;
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.runtime.Undefined;
 import util.ServletUtilitats;
-import static util.ServletUtilitats.C_R;
 
 /**
  *
  * @author mor
- * 180116
+ * 10116
  */
-@WebServlet(name = "Exercici02", urlPatterns = {"/Accessos"})
-public class Accessos extends HttpServlet {
-    
-    private String dataCarrega;
-    private int visites = 0;
-    
-    private static final String TITOL = "Exercici02: Accessos";
+@WebServlet(name = "Primitiva", urlPatterns = {"/Primitiva"})
+public class Primitiva extends HttpServlet {
 
+    private final String TITOL = "Exercici03 - Primitiva";
+    
+    private List<Integer> nombres = new ArrayList<>();
+    private String contingut = "Bon dia<br/>";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,17 +40,8 @@ public class Accessos extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String contingut;
-            String sortida;
-            novaVisita();
-            String carregaServlet = "Càrrega del servlet: " + getDataCarrega() + "<br/>" + C_R;
-            String carregaPagina = "Càrrega de la pàgina: " + getDataActual() + "<br/>" + C_R;
-            String carregaVisites = "Nombre de visites: " + getVisites() + "<br/>" + C_R;
-            
-            contingut = carregaServlet + carregaPagina + carregaVisites;
-            sortida = ServletUtilitats.construirPagina(TITOL, contingut);
-            
-            out.println(sortida);
+            generaContingut();
+            out.println(contingut);
             
         }
     }
@@ -76,6 +62,20 @@ public class Accessos extends HttpServlet {
     }
 
     /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
      * Returns a short description of the servlet.
      *
      * @return a String containing servlet description
@@ -84,43 +84,40 @@ public class Accessos extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    private void generaNombres() {
+        
+        int num = 0;
+        while (nombres.size() != 6) {
+            num = nombreAleatori();
+            if (!nombres.contains(num))
+                nombres.add(num);
+        }
+        
+    }
+    
+    private int nombreAleatori() {
+        return (int) (Math.random() * 49 + 1);
+    }
+    
+    private void generaContingut() {
+        
+        int end = nombres.size() - 1;
+        int comptador;
+        
+        StringBuilder resultat = new StringBuilder().append("<ul>");
+        for (Integer nombre : nombres) {
+            resultat.append("<li>").append(nombre).append("</li>");
+        }
+        
+        contingut = resultat.toString();
+        
+    }
 
     @Override
     public void init() throws ServletException {
         super.init();
-        
-        setDataCarrega(getDataActual());
-        setVisites(0);
-        
-    }
-    
-    private void novaVisita() {
-        setVisites(getVisites()+1);
-    }
-    
-    public static String getDataActual() {
-        Date d = new Date();
-        return d.toString();
-    }
-
-    public String getDataCarrega() {
-        return dataCarrega;
-    }
-
-    public int getVisites() {
-        return visites;
-    }
-
-    public void setDataCarrega(String dataCarrega) {
-        this.dataCarrega = dataCarrega;
-    }
-
-    public void setVisites(int visites) {
-        this.visites = visites;
+        generaNombres();
     }
     
 }
-
-    
-    
-
