@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package exercici05;
+package servlets.exercici03;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -14,14 +10,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.runtime.Undefined;
+import util.ServletUtilitats;
 
 /**
  *
  * @author mor
+ * 10116
  */
-@WebServlet(name = "Operacions", urlPatterns = {"/Operacions"})
-public class Operacions extends HttpServlet {
+@WebServlet(name = "Primitiva", urlPatterns = {"/Primitiva"})
+public class Primitiva extends HttpServlet {
 
+    private final String TITOL = "Exercici03 - Primitiva";
+    
+    private List<Integer> nombres = new ArrayList<>();
+    private String contingut = "Bon dia<br/>";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,43 +39,10 @@ public class Operacions extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             
-            String[] strOperands = request.getParameterValues("operand");
-            List<Integer> nombresList = new ArrayList<Integer>();
+            generaContingut();
+            out.println(contingut);
             
-            String operacio = request.getParameter("operacio");
-            int total = 0;
-            
-            switch (operacio) {
-                case "s":
-                    total = Integer.parseInt(strOperands[0]) + Integer.parseInt(strOperands[1]);
-                    break;
-                case "r":
-                    total = Integer.parseInt(strOperands[0]) - Integer.parseInt(strOperands[1]);
-                    break;
-                case "m":
-                    total = Integer.parseInt(strOperands[0]) * Integer.parseInt(strOperands[1]);
-                    break;
-                case "d":
-                    total = Integer.parseInt(strOperands[0]) / Integer.parseInt(strOperands[1]);
-                    break;
-                
-                default:
-                    total = 1234567890;
-                    break;
-                    
-            }
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Operacions</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>"+ total + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 
@@ -113,5 +84,40 @@ public class Operacions extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    private void generaNombres() {
+        
+        int num = 0;
+        while (nombres.size() != 6) {
+            num = nombreAleatori();
+            if (!nombres.contains(num))
+                nombres.add(num);
+        }
+        
+    }
+    
+    private int nombreAleatori() {
+        return (int) (Math.random() * 49 + 1);
+    }
+    
+    private void generaContingut() {
+        
+        int end = nombres.size() - 1;
+        int comptador;
+        
+        StringBuilder resultat = new StringBuilder().append("<ul>");
+        for (Integer nombre : nombres) {
+            resultat.append("<li>").append(nombre).append("</li>");
+        }
+        
+        contingut = resultat.toString();
+        
+    }
 
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        generaNombres();
+    }
+    
 }

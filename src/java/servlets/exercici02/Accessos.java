@@ -1,4 +1,4 @@
-package exercici02;
+package servlets.exercici02;
 
 import java.io.IOException;
 import java.io.PrintWriter;

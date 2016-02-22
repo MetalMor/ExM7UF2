@@ -1,9 +1,7 @@
-package exercici04;
+package servlets.exercici01;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,15 +12,13 @@ import util.ServletUtilitats;
 /**
  *
  * @author mor
- * 200116
+ * 140116
  */
-@WebServlet(name = "TaulaMultiplicar", urlPatterns = {"/TaulaMultiplicar"})
-public class TaulaMultiplicar extends HttpServlet {
+@WebServlet(name = "Exercici01", urlPatterns = {"/Exercici01"})
+public class Exercici01 extends HttpServlet {
 
-    private int factor;
-    
-    private final String TITOL = "Exercici04 - Taules de multiplicar";
-    private String contingut;
+    private static final String TITOL = "Exercici 01";
+    private static final String CONTINGUT = "Ola ke ase, programa o ke ase";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,11 +34,7 @@ public class TaulaMultiplicar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
-            factor = Integer.parseInt(request.getParameter("nombre"));
-            
-            taulaMultiplicar();
-            out.println(ServletUtilitats.construirPagina(TITOL, contingut));
+            out.println(ServletUtilitats.construirPagina(TITOL, CONTINGUT));
         }
     }
 
@@ -82,32 +74,7 @@ public class TaulaMultiplicar extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "<label id=\"info\" name=\"info\" >Exercici 1: hola món</label>";
     }// </editor-fold>
 
-    private void taulaMultiplicar() {
-        
-        List<Integer> nombresList = new ArrayList<>();
-        int nombre;
-        StringBuilder cadena = new StringBuilder(contingut);
-        
-        while (nombresList.size() != 10) {
-            nombre = nombresList.get(nombresList.size() - 1) + 1;
-            nombresList.add(nombre);
-        }
-        
-        for (int factor2 : nombresList) {
-            nombre = factor*factor2;
-            nombresList.add(nombre);
-        }
-        
-        cadena.append("<ul>");
-        for (int nombreToString : nombresList)
-            cadena.append(nombreToString);
-        cadena.append("</ul>");
-        
-        contingut = cadena.toString();
-        
-    }
-    
 }
